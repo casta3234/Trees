@@ -13,10 +13,16 @@ public class NodeA {
    private int value;
    private NodeA right = null;
    private NodeA left = null;
+   private String g;
    
    public NodeA(int value){
        this.value = value;
    }
+
+    NodeA(String sub_inorder) {
+        this.value = 0;
+        this.g = sub_inorder;
+    }
 
     public int getValue() {
         return value;
@@ -46,7 +52,12 @@ public class NodeA {
    
    @Override
    public String toString(){
-       return "value:" + this.value;
+       if (this.value != 0){
+        return "value:" + this.value;   
+       }
+       else{
+        return this.g;
+       }
    }
    
    

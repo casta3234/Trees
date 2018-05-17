@@ -185,6 +185,71 @@ public class BinaryTree {
         return (node.getLeft() != null) ? (node.getRight() != null ? 2 : 1) : (node.getRight() != null ? 1 : 0);
     }
     
+    public void in_pre2past (String preorder, String inordet){
+        BinaryTree recovery = new BinaryTree();
+        recovery = recovery_subtree_inpre(inordet, preorder);
+        recovery.posorder_print(recovery.root);
+    }
+    
+    public BinaryTree recovery_subtree_inpre(String sub_inorder, String preorder){
+        if(sub_inorder.length() == 0){
+            return new BinaryTree();
+        }
+        else{ 
+            BinaryTree temp = new BinaryTree();
+            if(sub_inorder.length() == 1){
+            temp.root = new NodeA(sub_inorder);
+            }
+            else{
+                int[] indexes = new int[sub_inorder.length()];
+                for (int i = 0; i < sub_inorder.length(); i++) {
+                    indexes[i] = preorder.indexOf(sub_inorder.substring(i, i+1));
+                }
+                int less = Integer.MAX_VALUE;
+                int index = -1;
+                for (int i = 0; i < indexes.length; i++) {
+                    if(indexes[i] < less){
+                        index = i;
+                        less = indexes[i];
+                    }
+                }                
+                temp.root = new NodeA(sub_inorder.substring(index, index + 1));
+                temp.root.setLeft(recovery_subtree_inpre(sub_inorder.substring(0, index), preorder).root);
+                temp.root.setRight(recovery_subtree_inpre(sub_inorder.substring(index + 1), preorder).root);
+            }
+            return temp;            
+        }      
+    }
+    public BinaryTree recovery_subtree_inpos(String sub_inorder, String posorder){
+        if(sub_inorder.length() == 0){
+            return new BinaryTree();
+        }
+        else{ 
+            BinaryTree temp = new BinaryTree();
+            if(sub_inorder.length() == 1){
+            temp.root = new NodeA(sub_inorder);
+            }
+            else{
+                int[] indexes = new int[sub_inorder.length()];
+                for (int i = 0; i < sub_inorder.length(); i++) {
+                    indexes[i] = posorder.indexOf(sub_inorder.substring(i, i+1));
+                }
+                int greater = Integer.MIN_VALUE;
+                int index = -1;
+                for (int i = 0; i < indexes.length; i++) {
+                    if(indexes[i] < greater){
+                        index = i;
+                        greater = indexes[i];
+                    }
+                }                
+                temp.root = new NodeA(sub_inorder.substring(index, index + 1));
+                temp.root.setLeft(recovery_subtree_inpos(sub_inorder.substring(0, index), posorder).root);
+                temp.root.setRight(recovery_subtree_inpos(sub_inorder.substring(index + 1), posorder).root);
+            }
+            return temp;            
+        }      
+    }
+    
     public void preorder_print(NodeA node){
         if(node != null){
             System.out.println(node.toString());
